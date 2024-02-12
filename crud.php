@@ -10,31 +10,45 @@ class DB {
         }
     }
 
-    public function execute($query, $params = []) {
-        $stmt = $this->dbh->prepare($query);
-        $stmt->execute($params);
-        return $stmt;
+    public function executeCRUD($operation, $table, $data = [], $condition = "") {
+        switch ($operation) {
+            case 'create':
+                $fields = implode(', ', array_keys($data));
+                $placeholders = rtrim(str_repeat('?,', count($data)), ',');
+                $sql = "INSERT INTO $table ($fields) VALUES ($placeholders)";
+                $params = array_values($data);
+                break;
+                
+            case 'read':
+                $fields = !empty($data) ? implode(', ', $data) : '*';
+                $sql = "SELECT $fields FROM $table";
+                $params = [];
+                if (!empty($condition)) {
+                    $sql .= " WHERE $condition";
+                }
+                break;
+                
+            case 'update':
+                $setValues = implode(' = ?, ', array_keys($data)) . ' = ?';
+                $sql = "UPDATE $table SET $setValues WHERE $condition";
+                $params = array_merge(array_values($data), [$condition]);
+                break;
+                
+            case 'delete':
+                $sql = "DELETE FROM $table WHERE $condition";
+                $params = [$condition];
+                break;
+                
+            default:
+                return false;
+        }
+        
+        try {
+            $stmt = $this->dbh->prepare($sql);
+            $stmt->execute($params);
+            return $stmt;
+        } catch (PDOException $e) {
+            die("Error executing query: " . $e->getMessage());
+        }
     }
 }
-
-// Voorbeeldgebruik:
-$db = new DB('database_name', 'localhost', 'username', 'password');
-
-// Voorbeeld van het maken van een nieuwe rij (Create)
-$data = ['username' => 'JohnDoe', 'email' => 'john@example.com', 'password' => 'secret'];
-$db->execute("INSERT INTO users (" . implode(', ', array_keys($data)) . ") VALUES (" . rtrim(str_repeat('?,', count($data)), ',') . ")", array_values($data));
-
-// Voorbeeld van het lezen van gegevens (Read)
-$query = "SELECT username, email FROM users WHERE id = ?";
-$result = $db->execute($query, [1]);
-while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
-    echo $row['username'] . ' - ' . $row['email'] . '<br>';
-}
-
-// Voorbeeld van het bijwerken van gegevens (Update)
-$data = ['email' => 'updated@example.com'];
-$db->execute("UPDATE users SET email = ? WHERE id = ?", array_values($data));
-
-// Voorbeeld van het verwijderen van een rij (Delete)
-$query = "DELETE FROM users WHERE id = ?";
-$db->execute($query, [1]);
