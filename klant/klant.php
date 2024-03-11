@@ -1,4 +1,5 @@
 <?php
+include '../db.php';
 class Klant {
     private $db;
 
@@ -8,12 +9,15 @@ class Klant {
 
     public function insertKlant($klantNaam) {
         try {
-            $sql = "INSERT INTO klanten (KlantNaam) VALUES (?)";
-            $stmt = $this->db->exec($sql, [$klantNaam]);
-            return $stmt;
+            return $this->db->exec("INSERT INTO klanten (KlantNaam) VALUES (?)", [$klantNaam]);
         } catch (Exception $e) {
             throw new Exception("Error inserting klant: " . $e->getMessage());
         }
     }
+    public function selectKlant()
+    {
+        return $this->db->exec("SELECT * from klanten");
+    }
+
 }
-?>
+
