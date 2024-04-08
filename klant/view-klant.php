@@ -1,9 +1,8 @@
 <?php
-require_once('klant.php'); // Assuming db.php contains the DB class definition
+require_once('klant.php'); 
 require_once('../header.php');
 
 $Klant = new Klant($myDb);
-
 $alleklanten = $Klant->selectKlant()->fetchAll();
 
 ?>
@@ -35,16 +34,16 @@ $alleklanten = $Klant->selectKlant()->fetchAll();
                             <td><?php echo $Klant['KlantID']; ?></td>
                             <td><?php echo $Klant['KlantNaam']; ?></td>
                             <td>
-                                <button class="btn btn-primary">Edit</button> 
-                                </td>
-                                <td>
-                                <button class="btn btn-danger">Delete</button>
-                            </td>
+                            <a class="btn btn-primary" href="edit-klant.php?KlantID=<?php echo $Klant['KlantID']; ?>">edit</a>
+                        </td>
+                            <td>
+                            <a class="btn btn-danger" href="Delete-klant.php?KlantID=<?php echo $Klant['KlantID']; ?>">Delete</a>
+                        </td>
                         </tr>
                     <?php } ?>
              
             </table>
         
     </div>
-</body>
+
 </html>

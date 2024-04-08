@@ -1,21 +1,19 @@
 <?php
-include('../db.php');
-include('tafel.php');
-require_once('../header.php');
-
+include('tafel.php'); // Include the Tafel class
+require_once('../header.php'); // Include the header file or database connection
 
 $message = '';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Retrieve form data
-    $nummer = $_POST['nummer'];
-    $capaciteit = $_POST['capaciteit'];
+    $TafelNummer = $_POST['TafelNummer'];
+    $Capaciteit = $_POST['Capaciteit'];
 
     // Create Tafels instance
-    $tafels = new Tafels($pdo);
+    $tafels = new Tafels($myDb); // Assuming $pdo is your database connection object
 
     // Attempt to insert tafel data
-    $success = $tafels->insertTafel($nummer, $capaciteit);
+    $success = $tafels->insertTafel($TafelNummer, $Capaciteit);
 
     // Set message based on success or failure
     if ($success) {
@@ -37,28 +35,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
     <div class="container">
-        <h1 class="mt-5">Add Tafel</h1>
+        <h1>Add Tafels</h1>
         <?php if (!empty($message)) : ?>
             <div class="alert alert-<?php echo $success ? 'success' : 'danger'; ?>" role="alert">
                 <?php echo $message; ?>
             </div>
         <?php endif; ?>
         <form action="add-tafel.php" method="POST">
-            <div class="form-group">
-                <label for="nummer">Tafel Nummer:</label>
-                <input type="number" class="form-control" id="nummer" name="nummer">
+            <div class="mb-3">
+                <label for="TafelNummer" class="form-label">Tafelnummer:</label>
+                <input type="text" class="form-control" id="TafelNummer" name="TafelNummer">
             </div>
-            <div class="form-group">
-                <label for="capaciteit">Capaciteit:</label>
-                <input type="number" class="form-control" id="capaciteit" name="capaciteit">
+            <div class="mb-3">
+                <label for="Capaciteit" class="form-label">Capaciteit:</label>
+                <input type="text" class="form-control" id="Capaciteit" name="Capaciteit">
             </div>
-            <button type="submit" class="btn btn-primary">Voeg Tafel Toe</button>
+            <button type="submit" class="btn btn-primary">Voeg tafel Toe</button>
         </form>
     </div>
 
     <!-- Bootstrap JS (optional, only if you need Bootstrap JavaScript components) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-bTjDol6Dv6fB9sr+ZHCrzpHuA3v+57vpvXcfn8XMFRZ0J4cEAimQNenRTk0RmoPt" crossorigin="anonymous"></script>
 </body>
 </html>

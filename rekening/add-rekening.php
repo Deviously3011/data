@@ -1,6 +1,31 @@
 <?php
-include('../db.php');
+include('Rekening.php');
 require_once('../header.php');
+
+$message = '';
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    $datum = $_POST['datum'];
+    $tijd = $_POST['tijd'];
+    $tafel = $_POST['tafel'];
+    $afdeling = $_POST['afdeling'];
+  
+    $totaalbedrag = $_POST['totaalBedrag'];
+    $btwpercentage = $_POST['btwPercentage'];
+    $inclbtw = $_POST['inclBTW'];
+    $exclbtw = $_POST['exclBTW'];
+
+    $Rekening = new Rekening($myDb);
+
+    $success = $Rekening->insertRekening($datum, $tijd, $tafel, $afdeling, $totaalbedrag, $btwpercentage, $inclbtw, $exclbtw);
+    if ($success) {
+        $message = "rekening toegevoegd!";
+    } else {
+        $message = "Er is een fout opgetreden bij het toevoegen van het product";
+    }
+
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">

@@ -8,15 +8,22 @@ class Tafels {
         $this->db = $db;
     }
 
-    public function insertTafel($nummer, $capaciteit) {
-        try {
-            $sql = "INSERT INTO tafels (TafelNummer, Capaciteit) VALUES (?, ?)";
-            $stmt = $this->db->exec($sql, [$nummer, $capaciteit]);
-            return $stmt; // Return the PDO statement
-        } catch (Exception $e) {
-            // Throw an exception to be handled by the caller
-            throw new Exception("Error inserting tafel: " . $e->getMessage());
-        }
+    public function insertTafel($Tafelnummer, $capaciteit)
+    {
+        return $this->db->exec("INSERT INTO tafels (tafelnummer, capaciteit) VALUES ('$Tafelnummer', '$capaciteit')");
+    }
+    public function selectTafel()
+    {
+        return $this->db->exec("SELECT * from tafels");
+    }
+    public function editTafel($TafelID, $TafelNummer, $Capaciteit)
+    {
+        return $this->db->exec("UPDATE tafels SET tafelnummer = ?, capaciteit = ? WHERE TafelID = ?", [$TafelNummer, $Capaciteit, $TafelID]);
+    }
+    
+    public function deleteTafel($TafelID)
+    {
+        return $this->db->exec("DELETE FROM tafels WHERE TafelID = ?", [$TafelID]);
     }
     
 }

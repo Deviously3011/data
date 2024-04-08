@@ -1,37 +1,28 @@
 <?php
-include('../db.php');
 include('reservering.php');
 require_once('../header.php');
 
 $message = '';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    try {
-        // Retrieve form data
-        $datum = $_POST['datum'];
-        $tijd = $_POST['tijd'];
-        $tafel = $_POST['tafel'];
-        $klant = $_POST['klant'];
-       
+    // Retrieve form data
+    $ReserveringsID = $_POST['reserveringsid'] ?? ''; // Use the null coalescing operator to handle undefined index
+    $Tijdslot = $_POST['tijdslot'] ?? '';
+    $TafelNummer = $_POST['tafelnummer'] ?? '';
+    $KlantNaam = $_POST['klantnaam'] ?? ''; // Fix the variable name
+    $KlantID = $_POST['klant'] ?? '';
 
-        // Create Reservering instance
-        $reservering = new Reservering($pdo);
+    // Create Reservering instance
+    $reservering = new Reservering($myDb);
 
-        // Attempt to insert reservation data
-        $success = $reservering->insertReservering($datum, $tijd, $tafel, $klant);
+    // Attempt to insert reservation data
+    $success = $reservering->insertReservering($ReserveringsID, $Tijdslot, $TafelNummer, $KlantNaam, $KlantID);
 
-        // Set message based on success or failure
-        if ($success) {
-            $message = "Reservering toegevoegd!";
-        } else {
-            $message = "Er is een fout opgetreden bij het toevoegen van de reservering.";
-        }
-    } catch (PDOException $e) {
-        // Database error
-        $message = "Database error: " . $e->getMessage();
-    } catch (Exception $e) {
-        // Other errors
-        $message = "Error: " . $e->getMessage();
+    // Set message based on success or failure
+    if ($success) {
+        $message = "Reservering toegevoegd!";
+    } else {
+        $message = "Er is een fout opgetreden bij het toevoegen van de reservering";
     }
 }
 ?>
@@ -55,19 +46,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <?php endif; ?>
         <form action="add-reservering.php" method="POST">
             <div class="form-group">
-                <label for="datum">Datum:</label>
-                <input type="date" id="datum" name="datum" class="form-control">
+                <label for="reserveringsid">Reserverings ID:</label>
+                <input type="text" id="reserveringsid" name="reserveringsid" class="form-control">
             </div>
             <div class="form-group">
-                <label for="tijd">Tijd:</label>
-                <input type="time" id="tijd" name="tijd" class="form-control">
+                <label for="tijdslot">Tijdslot:</label>
+                <input type="text" id="tijdslot" name="tijdslot" class="form-control">
             </div>
             <div class="form-group">
-                <label for="tafel">Tafel:</label>
-                <input type="number" id="tafel" name="tafel" class="form-control">
+                <label for="tafelnummer">Tafelnummer:</label>
+                <input type="number" id="tafelnummer" name="tafelnummer" class="form-control">
             </div>
             <div class="form-group">
-                <label for="klant">Klant:</label>
+                <label for="klantnaam">KlantNaam:</label> <!-- Fix the label -->
+                <input type="text" id="klantnaam" name="klantnaam" class="form-control"> <
+            </div>
+            <div class="form-group">
+                <label for="klant">Klant ID:</label>
                 <input type="number" id="klant" name="klant" class="form-control">
             </div>
          
@@ -81,4 +76,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
-            

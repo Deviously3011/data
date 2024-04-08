@@ -21,16 +21,28 @@
                     <a class="nav-link" href="/periode_3_data/reservering/add-reservering.php">Reserveringen</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="/periode_3_data/reservering/view-reservering.php">view-Reserveringen</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="/periode_3_data/rekening/add-rekening.php">Rekeningen</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/periode_3_data/product/add-product.php">Product</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="/periode_3_data/product/view-product.php">view-Product</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="/periode_3_data/tafel/add-tafel.php">tafel</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="/periode_3_data/tafel  /view-tafel.php">view-tafel</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="/periode_3_data/klant/add-klant.php">Klant</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/periode_3_data/klant /view-klant.php">view-Klant</a>
                 </li>
             </ul>
         </div>
